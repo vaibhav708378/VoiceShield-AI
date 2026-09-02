@@ -1,4 +1,5 @@
 from fastapi import FastAPI
+from app.database.mongodb import db
 
 app = FastAPI(
     title="VoiceShield AI API",
@@ -16,6 +17,17 @@ def home():
 
 @app.get("/health")
 def health():
-    return {
-        "status": "healthy"
-    }
+    try:
+        db.command("ping")
+
+        return {
+            "status": "healthy",
+            "database": "connected"
+        }
+
+    except Exception as e:
+        return {
+            "status": "unhealthy",
+            "database": "not connected",
+            "error": str(e)
+        }
