@@ -1,6 +1,8 @@
 from fastapi import FastAPI
 from app.database.mongodb import db
 
+from app.api.routes.auth import router as auth_router
+
 app = FastAPI(
     title="VoiceShield AI API",
     description="AI-powered voice deepfake and scam detection system",
@@ -31,3 +33,5 @@ def health():
             "database": "not connected",
             "error": str(e)
         }
+
+app.include_router(auth_router)
