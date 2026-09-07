@@ -11,7 +11,7 @@ pwd_context = CryptContext(
     deprecated="auto"
 )
 
-SECRET_KEY = "voiceshield-secret-key"
+SECRET_KEY = "voiceshield-super-secret-key"
 ALGORITHM = "HS256"
 
 
