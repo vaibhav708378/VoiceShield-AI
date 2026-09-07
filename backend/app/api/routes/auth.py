@@ -1,6 +1,7 @@
 from fastapi import APIRouter, HTTPException, Depends
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 
+
 from app.models.user import UserCreate, UserLogin
 from app.services.auth_service import (
     register_user,
@@ -10,13 +11,15 @@ from app.services.auth_service import (
 )
 from app.database.mongodb import db
 
-security = HTTPBearer()
 
 
 router = APIRouter(
     prefix="/auth",
     tags=["Authentication"]
 )
+
+
+security = HTTPBearer()
 
 
 @router.post("/register")
