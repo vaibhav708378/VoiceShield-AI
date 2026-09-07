@@ -1,13 +1,18 @@
 from fastapi import FastAPI
-from app.database.mongodb import db
+from fastapi.openapi.models import OAuthFlows as OAuthFlowsModel
+from fastapi.openapi.models import OAuth2 as OAuth2Model
 
+from app.database.mongodb import db
 from app.api.routes.auth import router as auth_router
+
 
 app = FastAPI(
     title="VoiceShield AI API",
     description="AI-powered voice deepfake and scam detection system",
     version="1.0.0"
 )
+
+app.include_router(auth_router)
 
 
 @app.get("/")
@@ -28,10 +33,9 @@ def health():
         }
 
     except Exception as e:
+
         return {
             "status": "unhealthy",
             "database": "not connected",
             "error": str(e)
         }
-
-app.include_router(auth_router)

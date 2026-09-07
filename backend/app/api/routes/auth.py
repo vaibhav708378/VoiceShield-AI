@@ -1,4 +1,5 @@
-from fastapi import APIRouter, HTTPException, Header
+from fastapi import APIRouter, HTTPException, Depends
+from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 
 from app.models.user import UserCreate, UserLogin
 from app.services.auth_service import (
