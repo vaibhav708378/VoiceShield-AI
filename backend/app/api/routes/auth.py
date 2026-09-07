@@ -67,22 +67,10 @@ def login(user: UserLogin):
 
 @router.get("/me")
 def get_current_user(
-    authorization: str = Header(None)
+    credentials: HTTPAuthorizationCredentials = Depends(security)
 ):
 
-    if not authorization:
-        raise HTTPException(
-            status_code=401,
-            detail="Authorization header missing"
-        )
-
-    if not authorization.startswith("Bearer "):
-        raise HTTPException(
-            status_code=401,
-            detail="Invalid authorization format"
-        )
-
-    token = authorization.split(" ")[1]
+    token = credentials.credentials
 
     user_id = verify_access_token(token)
 
