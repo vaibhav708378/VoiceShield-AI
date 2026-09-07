@@ -10,6 +10,8 @@ from app.services.auth_service import (
 )
 from app.database.mongodb import db
 
+security = HTTPBearer()
+
 
 router = APIRouter(
     prefix="/auth",
