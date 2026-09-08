@@ -4,15 +4,13 @@ from passlib.context import CryptContext
 from jose import jwt, JWTError
 
 from app.database.mongodb import db
+from app.core.config import settings
 
 
 pwd_context = CryptContext(
     schemes=["bcrypt"],
     deprecated="auto"
 )
-
-SECRET_KEY = "voiceshield-super-secret-key"
-ALGORITHM = "HS256"
 
 
 def hash_password(password: str):
@@ -33,17 +31,17 @@ def create_access_token(user_id: str):
 
     return jwt.encode(
         payload,
-        SECRET_KEY,
-        algorithm=ALGORITHM
+        settings.SECRET_KEY,
+        algorithm="HS256"
     )
 
 
 def verify_access_token(token: str):
     try:
-        payload = jwt.decode(
+        payload = payload = jwt.decode(
             token,
-            SECRET_KEY,
-            algorithms=[ALGORITHM]
+            settings.SECRET_KEY,
+            algorithms=["HS256"]
         )
 
         user_id = payload.get("user_id")
