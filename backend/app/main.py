@@ -1,6 +1,5 @@
 from fastapi import FastAPI
-from fastapi.openapi.models import OAuthFlows as OAuthFlowsModel
-from fastapi.openapi.models import OAuth2 as OAuth2Model
+from fastapi.middleware.cors import CORSMiddleware
 
 from app.database.mongodb import db
 from app.api.routes.auth import router as auth_router
@@ -12,6 +11,21 @@ app = FastAPI(
     version="1.0.0"
 )
 
+
+# CORS configuration
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=[
+        "http://localhost:5173",
+        "http://127.0.0.1:5173",
+    ],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
+
+# Authentication routes
 app.include_router(auth_router)
 
 
