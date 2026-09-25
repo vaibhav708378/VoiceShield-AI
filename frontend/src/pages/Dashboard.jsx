@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import API from "../services/api";
+import AudioMonitor from "./AudioMonitor";
 
 function Dashboard() {
   const [user, setUser] = useState(null);
@@ -65,7 +66,7 @@ function Dashboard() {
 
       <hr />
 
-      <h2>Real-Time Voice Protection</h2>
+      <h2><AudioMonitor /></h2>
 
       <p>
         VoiceShield AI will analyze voice calls for:
