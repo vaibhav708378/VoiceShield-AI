@@ -11,14 +11,12 @@ function AudioMonitor() {
 
   const startRecording = async () => {
     try {
-      // Request microphone permission
       const stream = await navigator.mediaDevices.getUserMedia({
         audio: true,
       });
 
       streamRef.current = stream;
 
-      // Connect to FastAPI WebSocket
       const websocket = new WebSocket(
         "ws://127.0.0.1:8000/ws/audio"
       );
@@ -35,7 +33,6 @@ function AudioMonitor() {
 
         mediaRecorderRef.current = mediaRecorder;
 
-        // Send audio chunks to backend
         mediaRecorder.ondataavailable = (event) => {
           if (
             event.data.size > 0 &&
@@ -45,7 +42,6 @@ function AudioMonitor() {
           }
         };
 
-        // Create an audio chunk every 1 second
         mediaRecorder.start(1000);
       };
 
@@ -77,13 +73,10 @@ function AudioMonitor() {
   };
 
   const stopRecording = () => {
-    // Stop MediaRecorder
     if (mediaRecorderRef.current) {
       mediaRecorderRef.current.stop();
       mediaRecorderRef.current = null;
     }
-
-    // Stop microphone
     if (streamRef.current) {
       streamRef.current.getTracks().forEach((track) => {
         track.stop();
@@ -91,8 +84,6 @@ function AudioMonitor() {
 
       streamRef.current = null;
     }
-
-    // Close WebSocket
     if (websocketRef.current) {
       websocketRef.current.close();
       websocketRef.current = null;
