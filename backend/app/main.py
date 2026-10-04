@@ -3,6 +3,7 @@ from fastapi.middleware.cors import CORSMiddleware
 
 from app.database.mongodb import db
 from app.api.routes.auth import router as auth_router
+from app.realtime.websocket import router as websocket_router
 
 
 app = FastAPI(
@@ -24,9 +25,11 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-
 # Authentication routes
 app.include_router(auth_router)
+
+# Real-time audio WebSocket
+app.include_router(websocket_router)
 
 
 @app.get("/")
