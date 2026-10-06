@@ -1,5 +1,7 @@
 from fastapi import APIRouter, WebSocket, WebSocketDisconnect
 
+from app.services.audio_service import process_audio_chunk
+
 
 router = APIRouter()
 
@@ -15,16 +17,21 @@ async def audio_websocket(websocket: WebSocket):
 
         while True:
 
+            # Receive audio from frontend
             audio_data = await websocket.receive_bytes()
 
             print(
                 f"Received audio chunk: {len(audio_data)} bytes"
             )
 
+            # Process audio chunk
+            result = process_audio_chunk(audio_data)
+
+            # Send processing result back to frontend
             await websocket.send_json({
-                "status": "received",
-                "message": "Audio chunk received successfully",
-                "size": len(audio_data)
+                "status": "processed",
+                "message": "Audio chunk processed successfully",
+                "size": result["size"]
             })
 
     except WebSocketDisconnect:

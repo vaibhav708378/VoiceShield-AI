@@ -25,10 +25,7 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# Authentication routes
 app.include_router(auth_router)
-
-# Real-time audio WebSocket
 app.include_router(websocket_router)
 
 
