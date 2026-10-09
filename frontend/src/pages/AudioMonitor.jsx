@@ -1,133 +1,121 @@
+
 import { useRef, useState } from "react";
 
 function AudioMonitor() {
   const [recording, setRecording] = useState(false);
-  const [message, setMessage] = useState("Ready to monitor");
+  const [status, setStatus] = useState("Ready");
   const [chunksReceived, setChunksReceived] = useState(0);
+  const [lastChunkSize, setLastChunkSize] = useState(0);
 
-  const mediaRecorderRef = useRef(null);
+  const recorderRef = useRef(null);
   const streamRef = useRef(null);
-  const websocketRef = useRef(null);
+  const socketRef = useRef(null);
 
   const startRecording = async () => {
     try {
+      setStatus("Requesting microphone permission...");
+
       const stream = await navigator.mediaDevices.getUserMedia({
         audio: true,
       });
-
       streamRef.current = stream;
 
-      const websocket = new WebSocket(
-        "ws://127.0.0.1:8000/ws/audio"
-      );
+      const socket = new WebSocket("ws://127.0.0.1:8000/ws/audio");
+      socketRef.current = socket;
 
-      websocketRef.current = websocket;
+      socket.onopen = () => {
+        const recorder = new MediaRecorder(stream);
+        recorderRef.current = recorder;
 
-      websocket.onopen = () => {
-        console.log("WebSocket connected");
-
-        setMessage("🎙️ Monitoring microphone...");
-        setRecording(true);
-
-        const mediaRecorder = new MediaRecorder(stream);
-
-        mediaRecorderRef.current = mediaRecorder;
-
-        mediaRecorder.ondataavailable = (event) => {
+        recorder.ondataavailable = (event) => {
           if (
             event.data.size > 0 &&
-            websocket.readyState === WebSocket.OPEN
+            socket.readyState === WebSocket.OPEN
           ) {
-            websocket.send(event.data);
+            socket.send(event.data);
           }
         };
 
-        mediaRecorder.start(1000);
+        recorder.start(1000);
+        setRecording(true);
+        setStatus("Connected — monitoring microphone");
       };
 
-      websocket.onmessage = (event) => {
-        const data = JSON.parse(event.data);
+      socket.onmessage = (event) => {
+        const result = JSON.parse(event.data);
 
-        console.log("Backend:", data);
-
-        if (data.status === "received") {
-          setChunksReceived((previous) => previous + 1);
+        if (result.status === "processed") {
+          setChunksReceived((count) => count + 1);
+          setLastChunkSize(result.size);
+          setStatus("Connected — audio chunks processed");
         }
       };
 
-      websocket.onerror = (error) => {
-        console.error("WebSocket error:", error);
-        setMessage("WebSocket connection failed.");
+      socket.onerror = () => {
+        setStatus("WebSocket connection error");
       };
 
-      websocket.onclose = () => {
-        console.log("WebSocket disconnected");
+      socket.onclose = () => {
+        setRecording(false);
+        setStatus("Connection closed");
       };
-
     } catch (error) {
-      console.error(error);
-      setMessage(
-        "Microphone permission was denied or unavailable."
-      );
+      console.error("Audio monitoring error:", error);
+      setStatus("Could not access microphone or connect");
+      stopRecording();
     }
   };
 
   const stopRecording = () => {
-    if (mediaRecorderRef.current) {
-      mediaRecorderRef.current.stop();
-      mediaRecorderRef.current = null;
+    if (recorderRef.current) {
+      recorderRef.current.stop();
+      recorderRef.current = null;
     }
-    if (streamRef.current) {
-      streamRef.current.getTracks().forEach((track) => {
-        track.stop();
-      });
 
+    if (streamRef.current) {
+      streamRef.current.getTracks().forEach((track) => track.stop());
       streamRef.current = null;
     }
-    if (websocketRef.current) {
-      websocketRef.current.close();
-      websocketRef.current = null;
+
+    if (socketRef.current) {
+      socketRef.current.close();
+      socketRef.current = null;
     }
 
     setRecording(false);
-    setMessage("Monitoring stopped.");
+    setStatus("Monitoring stopped");
   };
 
   return (
-    <div>
-      <h1>VoiceShield AI</h1>
-
+    <section>
       <h2>Real-Time Voice Protection</h2>
 
-      <p>{message}</p>
+      <p>
+        <strong>Status:</strong> {status}
+      </p>
 
       {!recording ? (
         <button onClick={startRecording}>
-          🎙️ Start Monitoring
+          Start Monitoring
         </button>
       ) : (
         <button onClick={stopRecording}>
-          ⏹️ Stop Monitoring
+          Stop Monitoring
         </button>
       )}
 
       <hr />
 
-      <h3>Real-Time Connection</h3>
+      <h3>Audio Stream</h3>
+      <p>Processed chunks: {chunksReceived}</p>
+      <p>Last chunk size: {lastChunkSize} bytes</p>
 
-      <p>
-        Audio Chunks Sent:
-        {" "}
-        {chunksReceived}
-      </p>
-
-      <h3>Detection Status</h3>
-
-      <p>Speaker Match: Not analyzed</p>
-      <p>Deepfake Risk: Not analyzed</p>
-      <p>Scam Risk: Not analyzed</p>
-      <p>Overall Risk: Not analyzed</p>
-    </div>
+      <h3>Detection Results</h3>
+      <p>Speaker verification: Not implemented yet</p>
+      <p>Deepfake detection: Not implemented yet</p>
+      <p>Scam detection: Not implemented yet</p>
+      <p>Overall risk: Not evaluated yet</p>
+    </section>
   );
 }
 
