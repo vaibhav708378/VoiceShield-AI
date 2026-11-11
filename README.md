@@ -1,49 +1,124 @@
-VoiceShield AI </br>
----
-  VoiceShield AI is a development project exploring synthetic-voice
-  detection, speaker verification, suspicious-speech analysis, and
-  real-time audio monitoring.
-  Current status: The candidate audio-classification model
-  Vansh180/deepfake-audio-wav2vec2 has downloaded and loaded
-  successfully. Its reported labels are real and fake. End-to-end
-  inference with a valid WAV recording and model evaluation are still
-  pending. Do not treat its scores as verified probabilities or proof
-  that a voice is genuine or cloned.
----
-## Project goals
-- Detect possible synthetic or spoofed audio.
-- Add consent-based speaker verification.
-- Analyze speech for potentially suspicious or scam-related intent.
-- Combine available signals into an explainable risk assessment.
-- Provide a React dashboard for monitoring and safety guidance.
-- Protect audio and speaker data through consent, limited retention,
-  and secure handling.
-These are project goals; not all capabilities are implemented or
-validated.
-Current AI model
-- Model:
-  Vansh180/deepfake-audio-wav2vec2
-- Task: Audio classification
-- Reported labels: real, fake
-- Runtime: Hugging Face Transformers and PyTorch; CPU inference is
-  configured.
-The model loaded successfully in the development environment. A valid
-audio file is still needed to test inference. The previous paths
-D:\AudioTests\sample.wav and D:\VoiceShield-AI\my_voice.wav were
-examples and did not exist.
+<div align="center">🛡️ VoiceShield AI
+AI-Powered Voice Deepfake Detection & Fraud Risk Analysis
+Detect suspicious synthetic voices. Assess risk. Strengthen voice security.
+<p>
+  <img src="https://img.shields.io/badge/Project-Smart%20India%20Hackathon%202026-blue?style=for-the-badge" alt="SIH 2026">
+  <img src="https://img.shields.io/badge/Problem%20Statement-SIH26104-purple?style=for-the-badge" alt="SIH26104">
+  <img src="https://img.shields.io/badge/Python-3.13-3776AB?style=for-the-badge&logo=python&logoColor=white" alt="Python">
+  <img src="https://img.shields.io/badge/AI-PyTorch%20%7C%20Transformers-EE4C2C?style=for-the-badge&logo=pytorch&logoColor=white" alt="AI">
+  <img src="https://img.shields.io/badge/Backend-FastAPI-009688?style=for-the-badge&logo=fastapi&logoColor=white" alt="FastAPI">
+  <img src="https://img.shields.io/badge/Frontend-React%20%7C%20Vite-61DAFB?style=for-the-badge&logo=react&logoColor=black" alt="React">
+  <img src="https://img.shields.io/badge/Database-MongoDB-47A248?style=for-the-badge&logo=mongodb&logoColor=white" alt="MongoDB">
+</p><p>
+  <a href="https://github.com/vaibhav708378/VoiceShield-AI">Repository</a> •
+  <a href="#-overview">Overview</a> •
+  <a href="#-architecture">Architecture</a> •
+  <a href="#-technology-stack">Tech Stack</a> •
+  <a href="#-getting-started">Getting Started</a> •
+  <a href="#-roadmap">Roadmap</a>
+</p></div>📌 Overview
+VoiceShield AI is an AI-driven voice security project developed for Smart India Hackathon 2026 – Problem Statement SIH26104.
 
-The .pt files named deepfake_model.pt, liveness_model.pt, and
-speaker_model.pt in the project checkpoints folders were found to be
-0 bytes. They are empty placeholders, not trained model weights.
-Technology stack
-- Backend: Python, FastAPI, Uvicorn
-- Frontend: React, Vite, JavaScript
-- AI/audio: PyTorch, Transformers, SoundFile, NumPy
-- Database: MongoDB
-- Realtime transport: WebSocket
-## Repository structure
-The main working directory is D:\VoiceShield-AI.
+With the increasing accessibility of generative AI and voice-cloning technologies, attackers can create synthetic speech that imitates real people. Such audio can potentially be misused in impersonation, social engineering, and voice-based fraud.
+
+VoiceShield AI explores a layered approach to identifying suspicious audio and supporting safer voice interactions. It combines audio preprocessing, deepfake classification, risk analysis, backend services, and a web-based interface.
+
+The project is being developed as a modular system so that AI inference, application services, real-time communication, and security logic can evolve independently.
+Project status: Under active development. The candidate deepfake classification model has been downloaded and loaded successfully. End-to-end inference on validated audio, model evaluation, and complete integration are still in progress. Model outputs must not be treated as verified proof that a voice is genuine or cloned.
+
+🎯 Problem Statement
+AI-generated speech and voice cloning introduce new risks to digital communication.
+
+Traditional call-screening methods often rely on phone numbers, known spam patterns, or user reports. They may not identify a suspicious call when an attacker uses a newly generated or impersonated voice.
+
+VoiceShield AI explores how audio-based machine learning and contextual risk signals can help identify potentially manipulated or suspicious speech.
+💡 Project Objectives
+- Explore detection of AI-generated and manipulated voice recordings.
+- Build an audio preprocessing pipeline for consistent model input.
+- Integrate a pretrained audio-classification model.
+- Develop a modular backend for audio analysis and application services.
+- Explore consent-based speaker verification as a separate capability.
+- Design a risk engine to combine available detection and contextual signals.
+- Provide a React dashboard for interacting with the system.
+- Apply privacy-conscious handling of audio, credentials, and speaker data.
+⚙️ Key Modules
+Module	Responsibility
+AI Engine	Audio classification and model inference
+Audio Preprocessing	Audio validation, loading, and preparation
+Backend API	FastAPI endpoints, authentication, and application services
+Risk Engine	Risk assessment using available analysis signals
+Realtime Module	WebSocket communication and real-time processing foundation
+Frontend	React-based user interface and dashboard
+Security	Authentication, configuration, and privacy-conscious data handling
+Documentation	Architecture, development notes, and project documentation
+
+
+The modules represent the project's architecture. Their presence does not imply that every capability is fully implemented or validated.
+🏗️ System Architecture
+```mermaid
+flowchart TD
+    A[Audio Input] --> B[Audio Validation & Preprocessing]
+    B --> C[AI Engine]
+    C --> D[Deepfake Audio Classification]
+    D --> E[Analysis Result]
+    E --> F[Risk Engine]
+    G[Contextual Signals] --> F
+    F --> H[Risk Assessment]
+    H --> I[FastAPI Backend]
+    I --> J[React Dashboard]
+    I <--> K[(MongoDB)]
+    L[WebSocket Layer] <--> I
+```
+Processing Workflow
+1. Audio Input — A user provides an audio sample through the application.
+2. Validation — The backend checks whether the submitted audio can be processed.
+3. Preprocessing — Audio is prepared for the model's expected input format.
+4. AI Analysis — The candidate audio-classification model evaluates the recording.
+5. Risk Assessment — Available analysis signals can be combined with contextual information.
+6. API Response — The backend returns structured results to the client.
+7. Dashboard — The frontend presents the available result and relevant safety information.
+The architecture is modular and the end-to-end workflow is still being integrated and tested.
+🤖 AI Model
+Current Candidate Model
+Property	Details
+Model	Vansh180/deepfake-audio-wav2vec2
+Model source	Hugging Face
+Task	Audio classification
+Reported labels	real, fake
+Framework	PyTorch
+Model integration	Hugging Face Transformers
+Audio handling	SoundFile and NumPy
+Runtime target	CPU inference configured in the development environment
+
+
+The model has been downloaded and loaded successfully in the development environment. A valid audio sample and a repeatable evaluation process are still required to verify end-to-end predictions.
+Important Model Notes
+- Model labels and raw scores are not automatically calibrated probabilities.
+- Model loading does not establish detection accuracy.
+- Performance must be evaluated using labelled genuine and synthetic recordings.
+- False-positive and false-negative rates must be measured.
+- Speaker verification and scam-intent detection are separate tasks; they are not provided by the current real/fake audio classifier.
+- Empty placeholder checkpoint files are not trained model weights.
+🧰 Technology Stack
+Layer	Technologies
+Programming Language	Python, JavaScript
+AI / Deep Learning	PyTorch, Hugging Face Transformers
+Audio Processing	SoundFile, NumPy
+Backend	FastAPI, Uvicorn
+Frontend	React, Vite
+Database	MongoDB
+Real-time Communication	WebSocket
+Development Tools	VS Code, Git, GitHub
+API Documentation	FastAPI Swagger UI
+
+
+📁 Repository Structure
 VoiceShield-AI/
+│
+├── .vscode/
+│
+├── VoiceShield-AI/          # Nested project directory
+│
 ├── ai-engine/
 │   ├── checkpoints/
 │   ├── configs/
@@ -59,140 +134,161 @@ VoiceShield-AI/
 │   ├── tests/
 │   ├── training/
 │   └── requirements.txt
+│
 ├── backend/
-│   ├── app/
-│   │   ├── core/
-│   │   ├── database/
-│   │   ├── realtime/
-│   │   ├── routes/
-│   │   └── services/
-│   └── .env
+│   └── app/
+│       ├── core/
+│       ├── database/
+│       ├── realtime/
+│       ├── routes/
+│       └── services/
+│
+├── deployment/
+├── docs/
 ├── frontend/
 │   └── src/
 ├── realtime/
 ├── risk-engine/
+├── scripts/
 ├── security/
-└── tests/
-This is a high-level view; the exact repository contents may change.
-## Prerequisites
-- Windows 10/11 or another supported operating system
-- Python 3.13 (current development environment)
+│
+├── .env.example
+├── .gitignore
+├── docker-compose.yml
+└── README.md
+This is a high-level view of the repository. Some folders may be expanded as development continues.
+🚀 Getting Started
+Prerequisites
+Install the following before running the project:
+- Python 3.13
 - Node.js and npm
-- MongoDB running locally or a valid MongoDB connection string
-- Internet access for the first model download
-Setup
-1. Open the project
-cd D:\VoiceShield-AI
-2. Configure backend environment
-Create or update backend\.env:
+- MongoDB Community Server or an accessible MongoDB instance
+- Git
+- VS Code or another suitable IDE
+- Internet access for the initial model download
+1. Clone the Repository
+git clone https://github.com/vaibhav708378/VoiceShield-AI.git
+2. Navigate to the Project
+cd VoiceShield-AI
+Run commands from the outer repository directory unless a step explicitly says otherwise.
+3. Configure Environment Variables
+Create or update backend/.env:
 MONGODB_URL=mongodb://localhost:27017
 DATABASE_NAME=voiceshield_ai
 SECRET_KEY=replace-with-a-long-random-secret
-Keep .env private. Never commit credentials, tokens, or production
-secrets.
-3. Install AI dependencies
-cd D:\VoiceShield-AI
+Use a strong, unique secret in your local environment. Never commit .env files, passwords, API keys, tokens, or production credentials.
+4. Set Up the Python Environment
+python -m venv .venv
+Activate it on Windows PowerShell:
+.\.venv\Scripts\Activate.ps1
+Install AI engine dependencies:
 python -m pip install -r .\ai-engine\requirements.txt
-The AI requirements currently include:
-transformers
-safetensors
-soundfile
-numpy
-PyTorch is also required. The current environment reported
-torch 2.14.1+cpu. The local environment also needed tf-keras to
-resolve a Transformers/Keras compatibility error.
-4. Install backend dependencies
-If backend\requirements.txt exists and is populated:
-cd D:\VoiceShield-AI\backend
-python -m pip install -r requirements.txt
-If it is missing or empty, install the backend dependencies separately
-before starting the server.
-5. Install frontend dependencies
-cd D:\VoiceShield-AI\frontend
+PyTorch is also required by the current model integration. Install a compatible build for your operating system and hardware using the official PyTorch installation guide.
+
+If a backend requirements file is available and populated, install it:
+python -m pip install -r .\backend\requirements.txt
+If it is not available or is incomplete, install the backend dependencies specified by the project before starting the server.
+5. Set Up the Frontend
+Open a separate terminal:
+cd frontend
 npm install
-Run the application
+▶️ Running the Application
 Run the backend and frontend in separate terminals.
-## Backend
-cd D:\VoiceShield-AI\backend
+Terminal 1 — Backend
+From the repository root:
+cd backend
 python -m uvicorn app.main:app --reload
-- API: http://127.0.0.1:8000
-- Swagger documentation: http://127.0.0.1:8000/docs
-## Frontend
-cd D:\VoiceShield-AI\frontend
+Backend:
+http://127.0.0.1:8000
+Interactive API documentation:
+http://127.0.0.1:8000/docs
+Alternative API documentation:
+http://127.0.0.1:8000/redoc
+Terminal 2 — Frontend
+cd frontend
 npm run dev
-- Vite development server: http://localhost:5173
-The backend must be running for frontend API and WebSocket features to
-work.
-Test the model
-Load the candidate model:
-cd D:\VoiceShield-AI
+Open the local Vite URL displayed in the terminal, commonly:
+http://localhost:5173
+The frontend's API and WebSocket functionality requires the backend to be running and correctly configured.
+🧪 Testing the AI Model
+1. Check Model Loading
+From the repository root:
 python .\ai-engine\inference\test_deepfake_model.py
-Run inference using the path to an actual supported audio file:
+2. Run Prediction on an Audio File
+Provide the path to an existing audio recording:
 python .\ai-engine\inference\predict.py "D:\path\to\your\recording.wav"
-Use a recording you own or have permission to analyze. If the supplied
-path does not exist, inference cannot start.
-## Interpreting model output
-The real and fake scores are outputs from the selected model. They
-are not automatically calibrated probabilities, proof of authenticity,
-or proof of fraud. Evaluate the model using labeled genuine and
-synthetic recordings and measure false positives and false negatives
-before relying on it.
-## Current limitations
-- Model loading succeeded, but inference with a valid WAV file has not
-  yet been confirmed.
-- The candidate model has not been independently evaluated for this
-  project's intended use.
-- Speaker verification is a separate task and is not provided by the
-  current real/fake classifier.
-- Scam-intent analysis is separate and needs its own model and
-  evaluation.
-- Empty .pt checkpoint files cannot be used as trained models.
-- Browser microphone capture is not the same as intercepting or
-  monitoring ordinary phone calls.
-- The application should show an explicit unavailable/unknown state
-  when a model is unavailable, audio is invalid, or analysis has not
-  run. It must not invent a genuine/fake verdict.
-## Privacy and security
-- Obtain informed consent before recording or analyzing a person's
-  voice.
-- Avoid storing raw audio unless necessary and explicitly authorized.
-- Protect authentication tokens, database credentials, and speaker
-  embeddings.
-- Define retention and deletion behavior for stored data.
+Use recordings that you own or have permission to analyze. The supplied file must exist and meet the input requirements of the inference pipeline.
+3. Validate Model Performance
+Before relying on predictions, evaluate the model using a labelled dataset containing both genuine and synthetic speech.
+
+Recommended evaluation metrics:
+- Accuracy
+- Precision
+- Recall
+- F1-score
+- Confusion matrix
+- False-positive rate
+- False-negative rate
+- Inference latency
+🔐 Privacy & Security Principles
+Voice data is sensitive. VoiceShield AI is being developed with the following principles in mind:
+- Obtain informed consent before recording or analyzing someone's voice.
+- Avoid retaining raw audio unless necessary and explicitly authorized.
+- Protect authentication tokens, database credentials, and speaker-related data.
+- Define clear retention and deletion policies.
 - Restrict access to recordings and analysis results.
-- Treat model output as an aid for review, not a final accusation or
-  decision.
-## Development roadmap
-1. Test inference with known, labeled WAV samples.
-2. Build an evaluation set and measure precision, recall,
-   false-positive rate, and false-negative rate.
-3. Integrate validated inference into the FastAPI audio-processing
-   service.
-4. Connect WebSocket audio streaming to the backend pipeline with input
-   validation and size limits.
-5. Implement speaker enrollment and verification as a separate,
-   consent-based feature.
-6. Add scam-intent analysis as a separate component.
-7. Combine available results in an explainable risk engine with an
-   explicit unknown/unavailable state.
-8. Add dashboard status, warnings, and privacy controls.
-9. Perform security, privacy, latency, and robustness testing before
-   deployment.
-## Contributing
-- Work in the outer project directory D:\VoiceShield-AI, not the
-  nested duplicate, unless the repository layout is intentionally
-  changed.
-- Keep secrets and private recordings out of version control.
-- Add tests for new services and model integrations.
-- Document model source, license, preprocessing, expected input
-  format, and evaluation results.
-- Do not claim a capability is complete until it has been tested and
-  evaluated.
-## Disclaimer
-VoiceShield AI is a development project. Audio classification can be
-wrong, and performance can vary across speakers, languages, devices, and
-recording conditions. Do not use an unvalidated result as the sole basis
-for financial, legal, employment, or other high-impact decisions.
+- Validate uploaded audio and apply suitable size and format limits.
+- Keep secrets in environment variables, not source code.
+- Treat automated detection as decision support, not a final accusation.
+🗺️ Roadmap
+The following roadmap separates completed development milestones from work that still needs implementation or validation.
+Area	Current status
+Project architecture and module structure	<img src="https://img.shields.io/badge/Structured-In%20Progress-blue" alt="Structured">
+Candidate Wav2Vec2 model download and loading	<img src="https://img.shields.io/badge/Model%20Loading-Completed-success" alt="Completed">
+End-to-end inference on validated audio	<img src="https://img.shields.io/badge/Validation-Pending-orange" alt="Pending">
+Model benchmarking and evaluation	<img src="https://img.shields.io/badge/Evaluation-Pending-orange" alt="Pending">
+FastAPI application and authentication foundation	<img src="https://img.shields.io/badge/Foundation-Developing-blue" alt="Developing">
+MongoDB integration and data lifecycle	<img src="https://img.shields.io/badge/Integration-Developing-blue" alt="Developing">
+React dashboard integration	<img src="https://img.shields.io/badge/Integration-Developing-blue" alt="Developing">
+End-to-end WebSocket audio processing	<img src="https://img.shields.io/badge/Integration-Pending-orange" alt="Pending">
+Consent-based speaker verification	<img src="https://img.shields.io/badge/Planned-Planned-lightgrey" alt="Planned">
+Scam-intent analysis	<img src="https://img.shields.io/badge/Planned-Planned-lightgrey" alt="Planned">
+Explainable risk assessment	<img src="https://img.shields.io/badge/Planned-Planned-lightgrey" alt="Planned">
+Security, privacy, and performance testing	<img src="https://img.shields.io/badge/Planned-Planned-lightgrey" alt="Planned">
 
-## 🚧Under Development
 
+Next Development Priorities
+1. Run inference on valid genuine and synthetic audio samples.
+2. Build a reproducible labelled evaluation dataset.
+3. Measure model performance and document limitations.
+4. Integrate validated inference into the backend audio service.
+5. Connect the frontend to the backend analysis workflow.
+6. Implement and test real-time audio processing.
+7. Develop speaker verification as a separate consent-based feature.
+8. Add contextual scam-intent analysis and explainable risk scoring.
+9. Complete privacy, security, and robustness testing.
+🤝 Contributing
+This repository is part of an ongoing development project. Contributions, suggestions, and constructive feedback are welcome.
+1. Fork the repository.
+2. Create a feature branch.
+3. Make focused changes and add appropriate tests.
+4. Commit your changes with a clear message.
+5. Open a pull request describing the changes.
+Please do not include private recordings, credentials, model secrets, or personal information in commits.
+👨‍💻 Project
+VoiceShield AI
+Smart India Hackathon 2026 — Problem Statement SIH26104
+
+Developer: Vaibhav Patil
+- GitHub: github.com/vaibhav708378
+- LinkedIn: linkedin.com/in/vaibhav708378
+- Portfolio: vaibhavpatil70.vercel.app
+⚠️ Disclaimer
+VoiceShield AI is an experimental development project. Audio-classification results can be incorrect and may vary across speakers, languages, recording devices, codecs, and environmental conditions.
+
+A model prediction is not proof of identity, fraud, or malicious intent. Do not use an unvalidated result as the sole basis for financial, legal, employment, or other high-impact decisions.
+<div align="center">🛡️ Detect. Analyze. Protect.
+Building safer voice interactions through responsible AI.
+
+⭐ If you find this project interesting, consider giving the repository a star.
+</div>
